@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from transport.service import TransportService
 from transport.exceptions.queryException import QueryException
 
-app = Blueprint('transport', __name__, url_prefix='/transport')
+app = Blueprint('transport', __name__, url_prefix='/trips')
 
 service = TransportService()
 
@@ -20,4 +20,8 @@ def getComfortableOrEconomic():
         raise QueryException(400, city=city, date=date)
 
     return service.getComfortableOrEconomic(city)
+
+@app.get("/avaliable-cities")
+def avaliableCities():
+    return service.avaliableCities()
 

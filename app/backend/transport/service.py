@@ -21,6 +21,11 @@ class TransportService:
             "faster": faster
         }
     
+    def avaliableCities(self):
+        justCities = map(lambda x: x['city'], self.data)
+
+        return list(set(justCities))
+    
 
     def __getByTime(self, transport):
         return int(transport["duration"].removesuffix('h'))
