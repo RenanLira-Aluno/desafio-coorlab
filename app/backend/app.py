@@ -1,5 +1,6 @@
-from flask import Flask, json
+from flask import Flask, json, jsonify
 from transport.controller import app as transport_app
+from transport.exception.queryException import QueryException
 
 def create_app():
     app = Flask(__name__)
@@ -7,6 +8,11 @@ def create_app():
     
 
     app.register_blueprint(transport_app)
+
+    @app.errorhandler(QueryException)
+    def handle_query_exception(error):
+    
+        return jsonify({"error": error.message}), error.code
 
     return app
 
