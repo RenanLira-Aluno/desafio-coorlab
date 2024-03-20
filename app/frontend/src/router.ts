@@ -1,11 +1,16 @@
 import { createRouter, createMemoryHistory, RouteRecordRaw } from "vue-router";
 
-import HomeView from "./View/HomeView.vue";
+import HomeView from "./views/HomeView.vue";
+import CalculadoraView from "./views/CalculatorView.vue";
 
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
         component: HomeView
+    },
+    {
+        path: '/calculadora',
+        component: CalculadoraView
     }
 ]
 

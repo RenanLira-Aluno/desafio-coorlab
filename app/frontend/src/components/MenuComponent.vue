@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Logo from './Logo.vue'
-import ItemMenu from './ItemMenu.vue'
+import Logo from './LogoComponent.vue'
+import ItemMenu from './ItemMenuComponent.vue'
 </script>
 
 <template>
@@ -16,6 +16,6 @@ import ItemMenu from './ItemMenu.vue'
 
 <style scoped>
 .menu {
-    @apply p-8 h-screen flex bg-slate-600 w-1/5 flex-col items-start gap-6;
+    @apply p-8 h-screen flex bg-slate-600 w-1/5 flex-col items-start gap-6 text-white;
 }
 </style>
