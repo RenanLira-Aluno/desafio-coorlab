@@ -3,7 +3,14 @@ import MenuComponent from './components/MenuComponent.vue'
 </script>
 
 <template>
-    <MenuComponent />
+    <div class="app">
+        <MenuComponent />
+        <RouterView />
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.app {
+    @apply flex h-screen w-screen;
+}
+</style>
