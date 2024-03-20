@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Logo from './Logo.vue'
+import ItemMenu from './ItemMenu.vue'
 </script>
 
 <template>
@@ -7,18 +8,14 @@ import Logo from './Logo.vue'
         <Logo />
         <nav>
             <ul>
-                <li class="item-menu">Calculadora de Viagem</li>
+                <ItemMenu title="Calculadora de Viagem" />
             </ul>
         </nav>
     </div>
 </template>
 
 <style scoped>
-.item-menu {
-    @apply p-4;
-}
-
 .menu {
-    @apply p-8 h-screen flex bg-fuchsia-300 w-1/5 flex-col items-start;
+    @apply p-8 h-screen flex bg-slate-600 w-1/5 flex-col items-start gap-6;
 }
 </style>
