@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from transport.service import TransportService
-from transport.exception.queryException import QueryException
+from transport.exceptions.queryException import QueryException
 
 app = Blueprint('transport', __name__, url_prefix='/transport')
 
