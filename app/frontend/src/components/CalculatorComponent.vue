@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { PhTruck, PhHandCoins } from '@phosphor-icons/vue'
-import axios from 'axios';
-import AutoComplete from 'primevue/autocomplete'
+import { AvaliableCitiesService } from '../services/AvaliableCitiesService'
 import { onMounted, ref } from 'vue';
+import AutoCompleteComponent from './AutoCompleteComponent.vue';
+
 const props = defineProps<{
     title: string
     subtitle: string
 }>()
 
 
-const selectCountry = ref<string>('')
+
+const cities = ref<{ id: number, name: string }[]>([])
+
+
 onMounted(async () => {
-    const cities = await axios.get('http://127.0.0.1:3000/transport/avaliable-cities')
-
-    console.log(cities.data)
-
+    cities.value = await AvaliableCitiesService.getData()
 })
+
 
 
 </script>
@@ -36,7 +38,7 @@ onMounted(async () => {
                 </div>
 
                 <div class="form-section">
-                    <AutoComplete v-model="selectCountry" />
+                    <AutoCompleteComponent :options="cities" />
                 </div>
 
                 <div class="form-section">
@@ -57,6 +59,10 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+autoCompleteStyle {
+    width: '100%'
+}
+
 .header {
     @apply flex w-full h-20 bg-slate-500 text-white items-center gap-4 px-10 text-2xl font-bold;
 }
