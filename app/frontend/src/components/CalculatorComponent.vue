@@ -1,9 +1,22 @@
 <script setup lang="ts">
 import { PhTruck, PhHandCoins } from '@phosphor-icons/vue'
+import axios from 'axios';
+import AutoComplete from 'primevue/autocomplete'
+import { onMounted, ref } from 'vue';
 const props = defineProps<{
     title: string
     subtitle: string
 }>()
+
+
+const selectCountry = ref<string>('')
+onMounted(async () => {
+    const cities = await axios.get('http://127.0.0.1:3000/transport/avaliable-cities')
+
+    console.log(cities.data)
+
+})
+
 
 </script>
 
@@ -23,8 +36,7 @@ const props = defineProps<{
                 </div>
 
                 <div class="form-section">
-                    <label for="distance">Destino</label>
-                    <input type="number" id="destination" />
+                    <AutoComplete v-model="selectCountry" />
                 </div>
 
                 <div class="form-section">
