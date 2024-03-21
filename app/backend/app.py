@@ -1,9 +1,11 @@
 from flask import Flask, json, jsonify
+from flask_cors import CORS
 from transport.controller import app as transport_app
 from transport.exceptions.queryException import QueryException
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     json.provider.DefaultJSONProvider.ensure_ascii = False
     
 
