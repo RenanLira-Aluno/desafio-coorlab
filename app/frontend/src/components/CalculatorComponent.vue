@@ -3,6 +3,7 @@ import { PhTruck, PhHandCoins } from '@phosphor-icons/vue'
 import { AvaliableCitiesService } from '../services/AvaliableCitiesService'
 import { onMounted, ref } from 'vue';
 import AutoCompleteComponent from './AutoCompleteComponent.vue';
+import DateSelectComponent from './DateSelectComponent.vue';
 import { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
 
 const props = defineProps<{
@@ -13,8 +14,8 @@ const props = defineProps<{
 
 
 const cities = ref<string[]>([])
-const select = ref<string>('')
-
+const selectedCity = ref<string>('')
+const selectedDate = ref<string>('')
 
 onMounted(async () => {
     const res = await AvaliableCitiesService.getData()
@@ -23,7 +24,11 @@ onMounted(async () => {
 })
 
 const change = (event: AutoCompleteItemSelectEvent) => {
-    select.value = event.value
+    selectedCity.value = event.value
+}
+
+const dateSelect = (date: Date) => {
+    selectedDate.value = date.toLocaleDateString()
 }
 
 </script>
@@ -44,12 +49,11 @@ const change = (event: AutoCompleteItemSelectEvent) => {
                 </div>
 
                 <div class="form-section">
-                    <AutoCompleteComponent :options="cities" :change="change" label="Selecione uma cidade" id="cidade" />
+                    <AutoCompleteComponent :options="cities" :change="change" label="Selecione uma cidade" id="city" />
                 </div>
 
                 <div class="form-section">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" />
+                    <DateSelectComponent :date-select="dateSelect" id="date" label="Selecione uma data"/>
                 </div>
 
                 <div class="form-section">
