@@ -1,4 +1,4 @@
-import { createRouter, createMemoryHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, RouteRecordRaw, createWebHistory } from "vue-router";
 
 import HomeView from "./views/HomeView.vue";
 import CalculadoraView from "./views/CalculatorView.vue";
@@ -15,6 +15,6 @@ const routes: RouteRecordRaw[] = [
 ]
 
 export const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes: routes
 })

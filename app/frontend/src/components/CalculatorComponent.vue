@@ -23,12 +23,19 @@ onMounted(async () => {
     cities.value.push(...res)
 })
 
+
+// event functions
 const change = (event: AutoCompleteItemSelectEvent) => {
     selectedCity.value = event.value
 }
 
-const dateSelect = (date: Date) => {
-    selectedDate.value = date.toLocaleDateString()
+const dateSelect = (event: Event) => {
+    selectedDate.value = (event.target as HTMLInputElement)?.value
+}
+
+const onSubmit = (event: Event) => {
+    event.preventDefault()
+    console.log(selectedCity.value, selectedDate.value)
 }
 
 </script>
@@ -42,7 +49,7 @@ const dateSelect = (date: Date) => {
             </h2>
         </div>
         <div class="body">
-            <form>
+            <form :on-submit="onSubmit" action="/calculadora">
                 <div class="form-title">
                     <PhHandCoins :weight="'fill'" />
                     <h3>{{ props.subtitle }}</h3>
@@ -53,11 +60,11 @@ const dateSelect = (date: Date) => {
                 </div>
 
                 <div class="form-section">
-                    <DateSelectComponent :date-select="dateSelect" id="date" label="Selecione uma data"/>
+                    <DateSelectComponent :date-select="dateSelect" id="date" label="Selecione uma data" />
                 </div>
 
                 <div class="form-section">
-                    <button type="submit">Calcular</button>
+                    <button type="submit" @click="onSubmit">calcular</button>
                 </div>
             </form>
             <div class="result">
@@ -69,20 +76,21 @@ const dateSelect = (date: Date) => {
 </template>
 
 <style scoped>
-.header {
-    @apply flex w-full h-20 bg-slate-500 text-white items-center gap-4 px-10 text-2xl font-bold;
-}
-
 .container {
     @apply flex flex-col w-full h-full shadow-xl rounded-md overflow-hidden;
 }
 
+.header {
+    @apply flex w-full min-h-20 bg-slate-500 text-white items-center gap-4 px-10 text-2xl font-bold;
+}
+
+
 .body {
-    @apply flex gap-4 px-4 py-10 h-full;
+    @apply grid grid-cols-2 gap-2 px-4 py-10 flex-1;
 }
 
 form {
-    @apply flex flex-col gap-4 p-20 bg-slate-300 flex-1 justify-center;
+    @apply flex flex-col gap-8 p-20 bg-slate-300 justify-center rounded-md;
 }
 
 .form-section {
@@ -90,10 +98,14 @@ form {
 }
 
 .form-title {
-    @apply flex items-center gap-2;
+    @apply flex items-center gap-4 text-2xl justify-center font-bold;
 }
 
 .result {
-    @apply flex flex-1
+    @apply flex shadow-xl;
+}
+
+button {
+    @apply bg-slate-500 text-white p-4 rounded-md;
 }
 </style>

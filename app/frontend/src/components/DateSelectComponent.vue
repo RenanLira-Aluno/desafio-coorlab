@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import Calendar from 'primevue/calendar';
-import { reactive, ref } from "vue"
+import { reactive } from "vue"
 import { vMaska, MaskaDetail } from 'maska'
 
 const { dateSelect, id, label } = defineProps<{
-    dateSelect: ((date: Date) => void),
+    dateSelect: ((event: Event) => void),
     id: string,
     label: string
 }>()
 
-const maskedValue = ref<string>('')
 const bindedValue = reactive({} as MaskaDetail)
 const op = reactive({
     mask: '##/##/####',
@@ -17,13 +16,16 @@ const op = reactive({
         '#': { pattern: /\d/ }
     }
 })
+
+
 </script>
 
 <template>
 
     <div>
         <label :for="id">{{ label }}</label>
-        <Calendar :input-id="id" v-maska:[op]="bindedValue" v-model="maskedValue" @date-select="dateSelect"  date-format="dd/mm/yy" :pt="{
+        <Calendar :input-id="id" v-maska:[op]="bindedValue" @input="dateSelect" v-model="bindedValue.masked"
+            date-format="dd/mm/yy" :pt="{
             input: 'bg-white p-3 h-12 focus:outline-none w-full rounded-md overflow-hidden',
             panel: 'bg-white mt-3 p-4 flex flex-col gap-4 max-h-auto shadow-md rounded-md',
             header: 'flex justify-between items-center',
