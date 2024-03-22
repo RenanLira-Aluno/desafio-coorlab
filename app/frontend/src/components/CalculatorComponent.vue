@@ -3,6 +3,7 @@ import { PhTruck, PhHandCoins } from '@phosphor-icons/vue'
 import { AvaliableCitiesService } from '../services/AvaliableCitiesService'
 import { onMounted, ref } from 'vue';
 import AutoCompleteComponent from './AutoCompleteComponent.vue';
+import { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
 
 const props = defineProps<{
     title: string
@@ -11,14 +12,19 @@ const props = defineProps<{
 
 
 
-const cities = ref<{ id: number, name: string }[]>([])
+const cities = ref<string[]>([])
+const select = ref<string>('')
 
 
 onMounted(async () => {
-    cities.value = await AvaliableCitiesService.getData()
+    const res = await AvaliableCitiesService.getData()
+
+    cities.value.push(...res)
 })
 
-
+const change = (event: AutoCompleteItemSelectEvent) => {
+    select.value = event.value
+}
 
 </script>
 
@@ -38,7 +44,7 @@ onMounted(async () => {
                 </div>
 
                 <div class="form-section">
-                    <AutoCompleteComponent :options="cities" />
+                    <AutoCompleteComponent :options="cities" :change="change" label="Selecione uma cidade" id="cidade" />
                 </div>
 
                 <div class="form-section">
@@ -59,10 +65,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-autoCompleteStyle {
-    width: '100%'
-}
-
 .header {
     @apply flex w-full h-20 bg-slate-500 text-white items-center gap-4 px-10 text-2xl font-bold;
 }

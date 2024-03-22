@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import AutoComplete, { AutoCompleteCompleteEvent } from 'primevue/autocomplete';
+import AutoComplete, { AutoCompleteCompleteEvent, AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
 import { ref } from 'vue';
 
-const props = defineProps<{
-    options: { id: number, name: string }[]
+const { options, change, id, label } = defineProps<{
+    options: string[],
+    id: string,
+    label: string,
+    change: ((event: AutoCompleteItemSelectEvent) => void)
 }>()
 
-const { options } = props
 
-const filteredOptions = ref<{ id: number, name: string }[]>([])
-const select = ref<string>('')
+const filteredOptions = ref<string[]>([])
+const selectInput = ref<string>('')
 
 const search = (event: AutoCompleteCompleteEvent) => {
     setTimeout(() => {
@@ -17,7 +19,7 @@ const search = (event: AutoCompleteCompleteEvent) => {
             filteredOptions.value = [...options];
         } else {
             filteredOptions.value = options.filter((op) => {
-                return op.name.toLowerCase().includes(event.query.toLowerCase());
+                return op.toLowerCase().includes(event.query.toLowerCase());
             });
         }
     }, 250);
@@ -27,7 +29,9 @@ const search = (event: AutoCompleteCompleteEvent) => {
 
 <template>
     <div>
-        <AutoComplete v-model="select" option-label="name" :suggestions="filteredOptions" @complete="search" :pt="{
+        <label :for="id">{{ label }}</label>
+        <AutoComplete :input-id="id" v-model="selectInput" force-selection v-on:item-select="change"
+            :suggestions="filteredOptions" @complete="search" :pt="{
             input: 'bg-white p-3 h-12 focus:outline-none w-full rounded-md overflow-hidden',
             list: 'bg-white mt-3 p-4 flex flex-col gap-4 overflow-y-scroll max-h-60 w-full shadow-md rounded-md',
             root: 'flex relative items-center',
