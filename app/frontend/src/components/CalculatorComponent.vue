@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { PhTruck, PhHandCoins } from '@phosphor-icons/vue'
 import { AvaliableCitiesService } from '../services/AvaliableCitiesService'
+import { GetBetterTripsService, IGetBetterTripsResponse } from '../services/GetBetterTrips'
 import { onMounted, ref } from 'vue';
 import AutoCompleteComponent from './AutoCompleteComponent.vue';
 import DateSelectComponent from './DateSelectComponent.vue';
 import { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
+import CardComponent from './CardComponent.vue';
 
 const props = defineProps<{
     title: string
@@ -17,8 +19,10 @@ const cities = ref<string[]>([])
 const selectedCity = ref<string>('')
 const selectedDate = ref<string>('')
 
+const resultData = ref<IGetBetterTripsResponse | undefined>(undefined)
+
 onMounted(async () => {
-    const res = await AvaliableCitiesService.getData()
+    const res = await AvaliableCitiesService.get()
 
     cities.value.push(...res)
 })
@@ -33,11 +37,13 @@ const dateSelect = (event: Event) => {
     selectedDate.value = (event.target as HTMLInputElement)?.value
 }
 
-const onSubmit = (event: Event) => {
+const onSubmit = async (event: Event) => {
     event.preventDefault()
-    console.log(selectedCity.value, selectedDate.value)
-}
 
+    const res = await GetBetterTripsService.get(selectedCity.value, selectedDate.value)
+
+    resultData.value = res
+}
 </script>
 
 <template>
@@ -64,11 +70,17 @@ const onSubmit = (event: Event) => {
                 </div>
 
                 <div class="form-section">
-                    <button type="submit" @click="onSubmit">calcular</button>
+                    <button type="submit" @click="onSubmit">CALCULAR</button>
                 </div>
             </form>
-            <div class="result">
-                <p>Nenhum Dado Selecionado</p>
+            <div v-if="resultData" class="result">
+
+                <CardComponent type="faster" :trip="resultData.faster" />
+                <CardComponent type="mostEconomic" :trip="resultData.mostEconomic" />
+
+            </div>
+            <div v-else class="wait-result">
+                <p>Nenhum dado selecionado.</p>
             </div>
         </div>
     </div>
@@ -102,7 +114,15 @@ form {
 }
 
 .result {
-    @apply flex shadow-xl;
+    @apply flex flex-col shadow-xl justify-center items-center p-8 rounded-md w-full gap-8;
+}
+
+.wait-result {
+    @apply flex justify-center items-center p-8 rounded-md w-full gap-8;
+}
+
+.wait-result p {
+    @apply text-2xl font-bold;
 }
 
 button {

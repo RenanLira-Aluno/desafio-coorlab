@@ -16,6 +16,6 @@ import ItemMenu from './ItemMenuComponent.vue'
 
 <style scoped>
 .menu {
-    @apply p-8 h-screen flex bg-slate-600 w-1/5 flex-col items-start gap-6 text-white;
+    @apply p-8 h-screen flex bg-slate-600 min-w-[360px] flex-col items-start gap-6 text-white;
 }
 </style>
